@@ -1,4 +1,4 @@
-package com.sunagakure.sudoku
+package com.firat_guler_18my03010.Projem
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 
-class Sudoku(context: Context) {
+class Sudoku_algoritma(context: Context) {
     var solved = false
     var ready = false
     var puzzle: Array<IntArray>? = null

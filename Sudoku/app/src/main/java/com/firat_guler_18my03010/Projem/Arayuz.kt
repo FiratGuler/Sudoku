@@ -1,4 +1,4 @@
-package com.sunagakure.sudoku
+package com.firat_guler_18my03010.Projem
 
 import android.content.Context
 import android.graphics.*
@@ -8,7 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 
-class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context) {
+class Arayuz(context: Context, private var sudokuAlgoritma: Sudoku_algoritma) : View(context) {
     private lateinit var extraCanvas: Canvas
     private lateinit var extraBitmap: Bitmap
     private var puzzleTileLength = 100
@@ -21,33 +21,33 @@ class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context)
     private val keyboardTextWidth = 25f
     private var defaultPaint = Paint().apply {
         color = drawColor
-        // Smooths out edges of what is drawn without affecting shape.
+
         isAntiAlias = true
-        // Dithering affects how colors with higher-precision than the device are down-sampled.
+
         isDither = true
-        style = Paint.Style.STROKE // default: FILL
-        strokeJoin = Paint.Join.ROUND // default: MITER
-        strokeCap = Paint.Cap.ROUND // default: BUTT
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        strokeCap = Paint.Cap.ROUND
     }
     private val outlinePaint: Paint = Paint().apply {
         color = Color.YELLOW
         isAntiAlias = true
-        // Dithering affects how colors with higher-precision than the device are down-sampled.
+
         isDither = true
-        style = Paint.Style.STROKE // default: FILL
-        strokeJoin = Paint.Join.ROUND // default: MITER
-        strokeCap = Paint.Cap.ROUND // default: BUTT
-        strokeWidth = boxBoldWidth // default: Hairline-width (really thin)
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        strokeCap = Paint.Cap.ROUND
+        strokeWidth = boxBoldWidth
     }
     private val boldPaint = Paint().apply {
         color = boldColor
         isAntiAlias = true
-        // Dithering affects how colors with higher-precision than the device are down-sampled.
+
         isDither = true
-        style = Paint.Style.STROKE // default: FILL
-        strokeJoin = Paint.Join.ROUND // default: MITER
-        strokeCap = Paint.Cap.ROUND // default: BUTT
-        strokeWidth = boxBoldWidth // default: Hairline-width (really thin)
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        strokeCap = Paint.Cap.ROUND
+        strokeWidth = boxBoldWidth
     }
     private val textSize = 50f
     private val textPaint = Paint().apply {
@@ -57,7 +57,7 @@ class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context)
     }
     private var constantPaint = Paint().apply {
         color = Color.BLACK
-        style = Paint.Style.FILL // default: FILL
+        style = Paint.Style.FILL
         textSize = 50f
     }
     private val messagePaint = Paint().apply {
@@ -82,25 +82,25 @@ class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context)
         extraCanvas = Canvas(extraBitmap)
         extraCanvas.drawColor(backgroundColor)
         if (!startedRequest) {
-            sudoku.getPuzzle()
+            sudokuAlgoritma.getPuzzle()
             startedRequest = true
         }
     }
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        if (canvas != null && this.sudoku.isReady()) {
+        if (canvas != null && this.sudokuAlgoritma.isReady()) {
             canvas.drawBitmap(extraBitmap, 0f, 0f, defaultPaint)
             drawRectangles(9, 9, canvas, defaultPaint, puzzleTileLength, leftMargin, topMargin)
             drawRectangles(3, 3, canvas, boldPaint, puzzleTileLength*3, leftMargin, topMargin)
             drawNumbers(9, 9, canvas, textPaint, constantPaint, outlinePaint, puzzleTileLength, leftMargin, topMargin,
-                this.sudoku.puzzle, this.sudoku.solution)
+                this.sudokuAlgoritma.puzzle, this.sudokuAlgoritma.solution)
             drawKeyboard(canvas, buttonPaint, textPaint)
         } else if (canvas != null) {
             canvas.drawBitmap(extraBitmap, 0f, 0f, defaultPaint)
             canvas.drawText("Oyuna Geçiş yapıyorsunuz...", this.leftMargin.toFloat(), this.topMargin.toFloat(), this.textPaint)
 
             Handler().postDelayed(
-                { this@SudokuCanvas.invalidate() }, 5000
+                { this@Arayuz.invalidate() }, 2000
             )
         }
     }
@@ -149,10 +149,10 @@ class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context)
         canvas.drawText(checkText,
             (leftX + this.leftMargin + this.puzzleTileLength * 2 + this.puzzleTileLength - 3*this.textSize/2.0).toFloat(),
             (topX + this.puzzleTileLength/2.0 + this.textSize/2.0).toFloat(), textPaint)
-        if (this.sudoku.isValidated()) {
-            this.sudoku.inValidate()
+        if (this.sudokuAlgoritma.isValidated()) {
+            this.sudokuAlgoritma.inValidate()
             var text = "Hatalı Tekrar Dene"
-            if (this.sudoku.isSolved()) {
+            if (this.sudokuAlgoritma.isSolved()) {
                 text = "Başarılı !!"
             }
             canvas.drawText(
@@ -223,7 +223,7 @@ class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context)
                 var j = ((event.x-leftMargin)/this.puzzleTileLength).toInt()
                 var i = ((event.y-topMargin)/this.puzzleTileLength).toInt()
                 if (i < 9 && j < 9) {
-                    if (this.sudoku.isValidPositionToFill(i, j)) {
+                    if (this.sudokuAlgoritma.isValidPositionToFill(i, j)) {
                         currI = i
                         currJ = j
                     } else {
@@ -243,11 +243,11 @@ class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context)
                             Log.i("Keyboard", "Index Y is $indexX and event Y is ${event.x}")
                             if (event.x <= indexX + this.keyboardKeyLength) {
                                 if (counter == 1)
-                                    this.sudoku.removeNumber(this.currI, this.currJ)
+                                    this.sudokuAlgoritma.removeNumber(this.currI, this.currJ)
                                 else
-                                    this.sudoku.addNumber(this.currI, this.currJ, counter - 1)
+                                    this.sudokuAlgoritma.addNumber(this.currI, this.currJ, counter - 1)
                             }
-                            Log.i("Keyboard", "Value at $i, $j is ${this.sudoku.solution?.get(currI)?.get(currJ)}")
+                            Log.i("Keyboard", "Value at $i, $j is ${this.sudokuAlgoritma.solution?.get(currI)?.get(currJ)}")
                         }
                     } else {
                         indexY = this.puzzleTileLength*10 + this.topMargin*3
@@ -255,9 +255,9 @@ class SudokuCanvas(context: Context, private var sudoku: Sudoku) : View(context)
                             var resetX = this.leftMargin
                             var checkX = resetX + this.leftMargin + this.puzzleTileLength * 2
                             if (event.x >= resetX && event.x <= resetX + this.puzzleTileLength * 2) {
-                                this.sudoku.resetSolution();
+                                this.sudokuAlgoritma.resetSolution();
                             } else if (event.x >= checkX && event.x <= checkX + this.puzzleTileLength * 2) {
-                                this.sudoku.checkSolution();
+                                this.sudokuAlgoritma.checkSolution();
                             }
                         }
                     }

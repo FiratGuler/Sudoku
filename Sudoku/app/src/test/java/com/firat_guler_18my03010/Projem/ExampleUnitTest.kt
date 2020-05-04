@@ -1,4 +1,4 @@
-package com.sunagakure.sudoku
+package com.firat_guler_18my03010.Projem
 
 import org.junit.Test
 

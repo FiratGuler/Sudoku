@@ -10,19 +10,22 @@
     <LinearLayout
         android:layout_width="400dp"
         android:layout_height="250dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginLeft="140dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginLeft="92dp"
+        android:layout_marginBottom="128dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/startnew"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="229dp"
+            android:layout_height="159dp"
+            android:background="#FFEB3B"
             android:onClick="clickListener"
-            android:text="@string/newgame" />
+            android:shadowRadius="20"
+            android:text="@string/newgame"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

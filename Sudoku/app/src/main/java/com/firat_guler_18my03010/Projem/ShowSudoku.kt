@@ -1,4 +1,4 @@
-package com.sunagakure.sudoku
+package com.firat_guler_18my03010.Projem
 
 
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +12,8 @@ class ShowSudoku : AppCompatActivity() {
     }
 
     private fun displaySudoku() {
-        val sudoku = Sudoku(this)
-        val myCanvas = SudokuCanvas(this, sudoku)
+        val sudoku = Sudoku_algoritma(this)
+        val myCanvas = Arayuz(this, sudoku)
         myCanvas.systemUiVisibility = SYSTEM_UI_FLAG_FULLSCREEN
         myCanvas.contentDescription = getString(R.string.description)
         setContentView(myCanvas)
